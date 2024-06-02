@@ -3,9 +3,6 @@ DOCKER_COMPOSE = docker-compose
 FRONTEND_SERVICE = frontend
 BACKEND_SERVICE = backend
 
-# Default target
-all: up
-
 # Build and run containers
 up:
 	$(DOCKER_COMPOSE) up --build
