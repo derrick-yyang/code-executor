@@ -27,6 +27,7 @@ env/
 # Logs and databases
 *.log
 *.sqlite3
+*.db
 
 # OS generated files
 .DS_Store
