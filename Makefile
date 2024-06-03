@@ -4,7 +4,7 @@ FRONTEND_SERVICE = frontend
 BACKEND_SERVICE = backend
 
 # Build and run containers
-up:
+run:
 	$(DOCKER_COMPOSE) up --build
 
 # Stop and remove containers
