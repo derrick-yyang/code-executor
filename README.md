@@ -18,7 +18,7 @@ To get started with the code-executor application, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/your-username/code-executor.git`
 
-2. Install dependencies: `cd code-executor && npm install`
+2. Navigate to the root directory: `cd code-executor`
 
 3. Build and run the application: `make run`. 
 
