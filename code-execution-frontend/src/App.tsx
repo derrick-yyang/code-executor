@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import CodeEditor from "./CodeEditor";
 import { useToast } from "@chakra-ui/react";
+import ExecutorButton from "./components/Button";
+import OutputPanel from "./components/OutputPanel";
 
 /*
 TODO:
-- Use ChakraUI to style the app
-- Add UX feedback for text and submit buttons
-  This includes
-  - Toasts
-  - button loading spinners
-- Add code output execution environment
 - Update README.md with instructions on how to run the app and high level implementation details
 */
 
@@ -43,12 +39,13 @@ const App: React.FC = () => {
         body: JSON.stringify({ code }),
       });
       const result = await response.json();
-      console.log(result);
       if (result.result) {
         setOutput(result.result);
       } else {
         setOutput(result.traceback);
+        throw new Error(result.error);
       }
+      console.log(result);
       showToast("Code Execution", "Code executed successfully", "success");
     } catch (error) {
       console.error(error);
@@ -67,57 +64,60 @@ const App: React.FC = () => {
         body: JSON.stringify({ code }),
       });
       const result = await response.json();
+
+      // Throw exception if there is an error in the response
+      if (result.error) {
+        setOutput(result.traceback);
+        throw new Error(result.error);
+      }
+
       console.log(result);
-      showToast("Code Execution", "Code executed successfully", "success");
+      showToast("Code Submission", "Code submitted successfully", "success");
     } catch (error) {
       console.error(error);
-      showToast("Code Execution", "Code execution failed", "error");
+      showToast("Code Submission", "Code submission failed", "error");
     } finally {
       setSubmitLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col bg-gray-600 h-screen text-gray-200">
-      <header className="bg-black p-4">
+    <div className="flex flex-col bg-light-gray h-screen text-gray-200">
+      <header className="bg-light-gray px-4 pt-4">
         <h1 className="text-2xl font-bold">Python3 Executor</h1>
+        <div className="bg-dark-gray p-4 rounded-lg flex-1 mt-2">
+          <p className="text-sm text-white">
+            This application allows you to execute Python3 code with support for
+            pandas and scipy libraries. You can also submit your code to a
+            database for future reference.
+          </p>
+        </div>
       </header>
-      <div className="flex flex-1 overflow-hidden p-4">
+      <div className="flex flex-1 overflow-hidden px-4 pb-4 bg-light-gray">
         <main className="flex flex-1 flex-col">
           <div className="flex justify-center my-4 space-x-4">
-            <button
+            <ExecutorButton
               onClick={testCode}
-              disabled={testLoading}
-              className={`flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-                testLoading ? "bg-gray-800" : "bg-gray-800 hover:bg-gray-700"
-              }`}
-            >
-              {testLoading ? <span>Loading...</span> : <>Test Code</>}
-            </button>
-            <button
+              isLoading={testLoading}
+              buttonText="Test Code"
+              buttonColor="gray"
+            />
+            <ExecutorButton
               onClick={submitCode}
-              disabled={submitLoading}
-              className={`flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-                submitLoading
-                  ? "bg-green-700"
-                  : "bg-green-600 hover:bg-green-500"
-              }`}
-            >
-              {submitLoading ? <span>Loading...</span> : <>Submit Code</>}
-            </button>
+              isLoading={submitLoading}
+              buttonText="Submit Code"
+              buttonColor="green"
+            />
           </div>
           <div className="flex flex-1 flex-col overflow-hidden">
             <div className="flex flex-1 overflow-hidden space-x-4">
               <CodeEditor code={code} setCode={setCode} />
-              <div className="w-1/2 bg-dark-gray text-white p-4 rounded-md overflow-y-auto">
-                <h2 className="text-md font-bold mb-2">Output</h2>
-                <pre className="whitespace-pre-wrap">{output}</pre>
-              </div>
+              <OutputPanel output={output} />
             </div>
           </div>
         </main>
       </div>
-      <footer className="bg-gray-900 text-center p-4">
+      <footer className="bg-light-gray text-center p-4">
         <p className="text-sm text-white">
           2024 Python3 Executor. All rights reserved to Derrick 🤠
         </p>
