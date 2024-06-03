@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Any, Dict
 import sqlite3
-import json
 import traceback
 
 app = FastAPI()
