@@ -1,6 +1,6 @@
 # code-executor
 
-Welcome to the code-executor workspace for Datacurve.io's Take-Home Assessment! This app provides a platform for executing Python3 code and supports the libraries `pandas` and `scipy`.
+Welcome to the code-executor workspace for Datacurve.ai's Take-Home Assessment! This app provides a platform for executing Python3 code and supports the libraries `pandas` and `scipy`.
 
 ## Architecture
 
